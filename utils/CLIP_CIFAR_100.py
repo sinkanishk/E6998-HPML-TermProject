@@ -21,7 +21,7 @@ import torch
 import re
 import torch
 
-model_b, preprocess = clip.load(params['model_size'], device='cpu')
+#model_b, preprocess = clip.load(params['model_size'], device='cpu')
 
 class Dataset(torch.utils.data.Dataset):
     
@@ -37,6 +37,7 @@ class Dataset(torch.utils.data.Dataset):
 
 
 def compute_model_performance(model_dict: dict()):
+    global preprocess
     device  = 'cuda'
     cifar100 = CIFAR100(root=os.path.expanduser("~/.cache"), download=True, train=False)
     params = {}

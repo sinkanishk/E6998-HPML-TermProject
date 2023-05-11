@@ -70,6 +70,17 @@ def _check_in_key(r_blocks : list, key : str):
             
     return ans
 
+def for_7_attention_layers(key,n_layers):
+    
+    rslt = False
+    for i in range(12):
+        str_A = (f"visual.transformer.resblocks.{i}.attn")
+#         visual.transformer.resblocks.1.mlp.c
+        str_B = (f"visual.transformer.resblocks.{i}.mlp.c")
+        if key.startswith(str_A) and i<n_layers:
+            rslt = True
+    return rslt
+
 def _compress_model(r_model_dict :dict, r_compress_ratio :float, n_layers : int, d_visual: bool, d_text : bool, r_blocks : list, n_offset: int):
     """
     takes the modek dictionary and 
@@ -97,25 +108,23 @@ def _compress_model(r_model_dict :dict, r_compress_ratio :float, n_layers : int,
     last_idx_transformer = 0
     last_idx_vision = 0
     for key,value in r_model_dict.items():
-        skip_layer = False
+        skip_layer = True
         
 #         if _check_in_key(r_blocks,key) == False:
 #             skip_layer = True
-        if d_text==True and d_visual==True:
-            skip_layer = False
-    
-        if d_visual and key.startswith('visual')==False:
-            skip_layer = True
-        
-        if d_text and key.startswith('transformer')==False:
-            skip_layer = True
-    
-
-            
-#         if key.startswith('visual.transformer.resblocks.3.attn') or key.startswith('visual.transformer.resblocks.1.attn') or key.startswith('visual.transformer.resblocks.2.attn'):
+#         if d_text==True and d_visual==True:
 #             skip_layer = False
-#         print(idx+n_offset,n_layers,skip_layer)
-        if len(value.shape)==2 and idx+n_offset<n_layers and not skip_layer:
+    
+#         if d_visual and key.startswith('visual')==False:
+#             skip_layer = True
+        
+#         if d_text and key.startswith('transformer')==False:
+#             skip_layer = True
+    
+        if for_7_attention_layers(key,n_layers):
+            skip_layer = False
+            
+        if len(value.shape)==2 and not skip_layer:
             print(f"key-{key} gonna be compressed")
             layers_skipped += 1
             r_dim_a = value.shape[0]
