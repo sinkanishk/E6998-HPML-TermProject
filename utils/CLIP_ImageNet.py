@@ -21,7 +21,7 @@ def load_imagenet_classes():
         'a photo of the small {}.'
         ]
     
-    return imagenet_templates, iamgenet_classes 
+    return imagenet_classes, imagenet_templates 
     
 def zeroshot_classifier(classnames, templates, model):
     with torch.no_grad():
@@ -39,9 +39,6 @@ def zeroshot_classifier(classnames, templates, model):
 
 
 
-
-
-
 def accuracy(output, target, topk=(1,)):
     pred = output.topk(max(topk), 1, True, True)[1].t()
     correct = pred.eq(target.view(1, -1).expand_as(pred))
@@ -50,7 +47,7 @@ def accuracy(output, target, topk=(1,)):
 
 def compute_model_performance(model_dict: dict()):
     model, preprocess = clip.load("ViT-B/32")
-    model.load_state_dict(state_dict)
+    model.load_state_dict(model_dict)
     model = model.to('cuda')
     images = ImageNetV2Dataset(transform=preprocess)
     loader = torch.utils.data.DataLoader(images, batch_size=32, num_workers=2)
