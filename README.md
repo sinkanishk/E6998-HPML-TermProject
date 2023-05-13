@@ -38,11 +38,24 @@ In this project we evaluate the model using both task specific and generic metri
 - vision_only_from_start_on_attention_CIFAR.py is used to compress the visual transformer attention blocks (CIFAR100 dataset)
 - vision_only_from_start_IMAGENET_without_attention.py is used to prune the text encoder attention modules (ImageNet dataset)
 - Visualize_Result.ipynb contains the code and outputs for generating the graphs of the results of the experiments. This includes compressing the visual transformer attention blocks (constant compression ratio and varying n_layers), compressing the visual transformer attention blocks (constant n_layers and varying compression ratio), and pruning the text encoder attention modules (accuracy/time vs number of layers)
+- Visualize_Result.py contains the scipts for generating the graphs of the results of the experiments. 
 <br>
 
 - /results/vision_only_from_start_with_attention.json contains the results of compressing the Visual Transformer Attention Blocks for the ImageNet dataset
 - /results/vision_only_from_start_with_attention_CIFAR100.json contains the results of compressing the Visual Transformer Attention Blocks for the CIFAR190 dataset
 - /results/vision_only_from_start_without_attention.json contains results of pruning the text encoder attention modules
+
+### Example commands to run
+
+- python Visualize_Results.py to visualize the results of the the experiments. Can also observe the output graphs in Visualize_Results.ipynb
+- python vision_only_from_start_on_attention_CIFAR.py to run the script to compress the visual transformer attention blocks (CIFAR100 dataset) 
+- python vision_only_from_start_on_attention.py to run the script to compress the visual transformer attention blocks (ImageNet dataset)
+- python vision_only_from_start_IMAGENET_without_attention.py to run the script to prune the text encoder attention modules (ImageNet dataset)
+
+### Observations
+
+We found out that keeping a low-compression ratio with more number of layers resulted in a better compressed model than keeping a high compression-ratio for a fewer number of layers. We also found out that visual transformer attention layers are less sensitive to low-matrix approximation as compared to their textual counterparts. Therefore we adopted matrix-approximation for the visual transformers only. We experimented with pruning of different attention blocks in the textual encoder of the CLIP. We found that the blocks at the end are less sensitive towards the inference accuracy as compared to the residual attention blocks from the start. We observed that there was a significant dip in the accuracy if we remove more than 3 attention blocks. Overall, this study provides valuable insights for improving the efficiency of CLIP's inference process, making it more viable for real-time and resource-constrained scenarios. 
+
 
 ### References
 
