@@ -37,6 +37,7 @@ In this project we evaluate the model using both task specific and generic metri
 - vision_only_from_start_on_attention.py is used to compress the visual transformer attention blocks (ImageNet dataset)
 - vision_only_from_start_on_attention_CIFAR.py is used to compress the visual transformer attention blocks (CIFAR100 dataset)
 - vision_only_from_start_IMAGENET_without_attention.py is used to prune the text encoder attention modules (ImageNet dataset)
+- Visualize_Result.ipynb contains the code and outputs for generating the graphs of the results of the experiments. This includes compressing the visual transformer attention blocks (constant compression ratio and varying n_layers), compressing the visual transformer attention blocks (constant n_layers and varying compression ratio), and pruning the text encoder attention modules (accuracy/time vs number of layers)
 <br>
 
 - /results/vision_only_from_start_with_attention.json contains the results of compressing the Visual Transformer Attention Blocks for the ImageNet dataset
